@@ -56,6 +56,14 @@ bool checkWinner(string curSign){
     return isWon;
 }
 
+bool isTie(){
+    bool isTie = false;
+    if(currentPoses[0][0] != " " && currentPoses[0][1] != " " && currentPoses[0][2] != " " && currentPoses[1][0] != " " && currentPoses[1][1] != " " && currentPoses[1][2] != " " && currentPoses[2][0] != " " && currentPoses[2][1] != " " && currentPoses[2][2] != " "){
+        isTie = true;
+    }
+    return isTie;
+}
+
 int main(){
     bool gotAlreadyFilledError = false;
 
@@ -130,6 +138,12 @@ int main(){
                 tictactoeBoard();
                 cout << "\n" << "\e[1m" << currentSign << "\e[0m" << " Has won!";
                 break;
+            }else {
+                if(isTie()){
+                    tictactoeBoard();
+                    cout << "\n" << "It was a tie!" << endl;
+                    break;
+                }
             }
         }
     }
