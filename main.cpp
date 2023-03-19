@@ -64,12 +64,31 @@ bool isTie(){
     return isTie;
 }
 
+void clearScreen()
+{
+    #if defined _WIN32
+        system("cls");
+    #elif defined(__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+        system("clear");
+    #elif defined(__APPLE__)
+        system("clear");
+    #endif
+}
+
 int main(){
     bool gotAlreadyFilledError = false;
+    string gameError = "";
+    bool breakWhilTrue = false;
 
     while (true)
     {
+        clearScreen();
+        if(gameError != ""){
+            cout << "\n" << gameError << endl;
+            gameError = "";
+        }
         tictactoeBoard();
+        if(breakWhilTrue) break;
         reversePyschology();
         if(gotAlreadyFilledError){
             reversePyschology();
@@ -88,7 +107,7 @@ int main(){
         bool continueCode = true;
         bool continueCheckCode = true;
         int selectedRow,selectedColumn;
-        cout << "\n" << "Current player playing: " << currentSign << "\n";
+        cout << "\n" << "Its " << currentSign << "'s Turn!" << "\n";
         cout << "\n" << "Select a row: ";
         cin >> selectedRow;
         cout << "Select a column: ";
@@ -99,14 +118,14 @@ int main(){
 
         if (continueCheckCode && selectedRow > 2)
         {
-            cout << "\n" << "Unknown Number!" << endl;
+            gameError = "Unknown Number!";
             gotAlreadyFilledError = true;
             continueCode = false;
             continueCheckCode = false;
         }
         if (continueCheckCode && selectedColumn > 2)
         {
-            cout << "\n" << "Unknown Number!" << endl;
+            gameError = "Unknown Number!";
             gotAlreadyFilledError = true;
             continueCode = false;
             continueCheckCode = false;
@@ -114,35 +133,33 @@ int main(){
 
         if (continueCheckCode && selectedRow < 0)
         {
-            cout << "\n" << "Unknown Number!" << endl;
+            gameError = "Unknown Number!";
             gotAlreadyFilledError = true;
             continueCode = false;
             continueCheckCode = false;
         }
         if (continueCheckCode && selectedColumn < 0)
         {
-            cout << "\n" << "Unknown Number!" << endl;
+            gameError = "Unknown Number!";
             gotAlreadyFilledError = true;
             continueCode = false;
             continueCheckCode = false;
         }
-
         if(continueCheckCode && currentPoses[selectedRow][selectedColumn] != " ") {
-            cout << "\n" << "You cannot do that because its already filled!" << "\n";
+            gameError = "You cannot do that because " + currentPoses[selectedRow][selectedColumn] + " Has Taken your place!";
             gotAlreadyFilledError = true;
             continueCode = false;
         }
         if(continueCode){
             currentPoses[selectedRow][selectedColumn] = currentSign;
             if(checkWinner(currentSign)){
-                tictactoeBoard();
-                cout << "\n" << "\e[1m" << currentSign << "\e[0m" << " Has won!";
-                break;
+                gameError = "\e[1m" + currentSign + "\e[0m" + " Has won!";
+                breakWhilTrue = true;
             }else {
                 if(isTie()){
                     tictactoeBoard();
-                    cout << "\n" << "It was a tie!" << endl;
-                    break;
+                    gameError = "It was a tie!";
+                    breakWhilTrue = true;
                 }
             }
         }
