@@ -4,6 +4,10 @@
 #include <map>
 using namespace std;
 
+/**
+  * @author ContentGamer
+*/
+
 int currentPlayerPlaying = 1;
 
 vector<vector<string>> currentPoses = {
