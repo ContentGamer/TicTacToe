@@ -1,2 +1,2 @@
 # TicTacToe
-TicTacToe C Plus Plus
+c++ tictactoe.
